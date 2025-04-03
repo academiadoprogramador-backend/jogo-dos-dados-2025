@@ -1,15 +1,12 @@
 ﻿namespace JogoDosDados.ConsoleApp
 {
-    /* Versão 3 - Incluir o computador como oponente 
+    /* Versão 5 Eventos Especiais:
         Requisitos:
-
-        Informar que o computador está jogando
-        Armazenar a posição do computador na pista e atualizar o valor após o lançamento do dado
-        Atualizar a posição do computador após seu lançamento de dado
-        Exibir a nova posição
-        Verificar se o computador alcançou ou ultrapassou a linha de chegada
-        Informar quem venceu o jogo
-        Implementar turnos alternados entre jogador e computador
+        
+        - Avanço extra: Se o competidor parar em uma posição específica (ex.: 5, 10, 15), ele avança +3
+        casas. [x]
+        - Recuo: Se o competidor parar em outra posição específica (ex.: 7, 13, 20), ele recua -2 casas. [x]
+        - Rodada extra: Se o competidor tirar 6 no dado, ele ganha uma rodada extra. [x]
     */
     internal class Program
     {
@@ -26,51 +23,128 @@
 
                 while (jogoEstaEmAndamento)
                 {
-                    // Turno do Usuário
-                    ExibirCabecalho("Usuário");
+                    bool rodadaExtraUsuario;
 
-                    int resultado = LancarDado();
-
-                    ExibirResultadoSorteio(resultado);
-
-                    posicaoUsuario += resultado;
-
-                    if (posicaoUsuario >= limiteLinhaChegada)
+                    do
                     {
-                        Console.WriteLine("Parabéns, você alcançou a linha de chegada!");
-                        Console.ReadLine();
+                        rodadaExtraUsuario = false;
 
-                        jogoEstaEmAndamento = false;
-                        continue;
-                    }
-                    else
-                        Console.WriteLine($"O jogador está na posição: {posicaoUsuario} de {limiteLinhaChegada}");
+                        ExibirCabecalho("Usuário");
 
-                    Console.WriteLine("---------------------------------------------");
+                        int resultado = LancarDado();
+
+                        ExibirResultadoSorteio(resultado);
+
+                        posicaoUsuario += resultado;
+
+                        if (posicaoUsuario == 5 || posicaoUsuario == 10 || posicaoUsuario == 15 || posicaoUsuario == 25)
+                        {
+                            Console.WriteLine("---------------------------------------------");
+                            Console.WriteLine("Evento Especial: Avanço Extra de 3 casas!");
+                            Console.WriteLine("---------------------------------------------");
+
+                            posicaoUsuario += 3;
+
+                            Console.WriteLine($"Nova posição: {posicaoUsuario}!");
+                        }
+
+                        else if (posicaoUsuario == 7 || posicaoUsuario == 13 || posicaoUsuario == 20)
+                        {
+                            Console.WriteLine("---------------------------------------------");
+                            Console.WriteLine("Evento Especial: Recuo de 2 casas!");
+                            Console.WriteLine("---------------------------------------------");
+
+                            posicaoUsuario -= 2;
+
+                            Console.WriteLine($"Nova posição: {posicaoUsuario}!");
+                        }
+
+                        if (resultado == 6)
+                        {
+                            Console.WriteLine("---------------------------------------------");
+                            Console.WriteLine("Evento Especial: RODADA EXTRA!");
+                            Console.WriteLine("---------------------------------------------");
+
+                            rodadaExtraUsuario = true;
+                        }
+
+                        else if (posicaoUsuario >= limiteLinhaChegada)
+                        {
+                            Console.WriteLine("Parabéns, você alcançou a linha de chegada!");
+                            Console.ReadLine();
+
+                            jogoEstaEmAndamento = false;
+                            continue;
+                        }
+                        else
+                            Console.WriteLine($"O jogador está na posição: {posicaoUsuario} de {limiteLinhaChegada}");
+
+                        Console.WriteLine("---------------------------------------------");
+
+                    } while (rodadaExtraUsuario);
+                    
 
                     Console.Write("Pressione ENTER para continuar...");
                     Console.ReadLine();
 
-                    // Turno do Computador
-                    ExibirCabecalho("Computador");
+                    bool rodadaExtraComputador;
 
-                    int resultadoComputador = LancarDado();
-
-                    ExibirResultadoSorteio(resultadoComputador);
-
-                    posicaoComputador += resultadoComputador;
-
-
-                    if (posicaoComputador >= limiteLinhaChegada)
+                    do
                     {
-                        Console.WriteLine("Que pena! O computador alcançou a linha de chegada!");
-                        Console.ReadLine();
+                        rodadaExtraComputador = false;
 
-                        jogoEstaEmAndamento = false;
-                        continue;
-                    }
-                    else
-                        Console.WriteLine($"O computador está na posição: {posicaoComputador} de {limiteLinhaChegada}");
+                        ExibirCabecalho("Computador");
+
+                        int resultadoComputador = LancarDado();
+
+                        ExibirResultadoSorteio(resultadoComputador);
+
+                        posicaoComputador += resultadoComputador;
+
+                        if (posicaoComputador == 5 || posicaoComputador == 10 || posicaoComputador == 15 || posicaoComputador == 25)
+                        {
+                            Console.WriteLine("---------------------------------------------");
+                            Console.WriteLine("Evento Especial: Avanço Extra de 3 casas!");
+                            Console.WriteLine("---------------------------------------------");
+
+                            posicaoComputador += 3;
+
+                            Console.WriteLine($"Nova posição: {posicaoComputador}!");
+                        }
+
+                        else if (posicaoComputador == 7 || posicaoComputador == 13 || posicaoComputador == 20)
+                        {
+                            Console.WriteLine("---------------------------------------------");
+                            Console.WriteLine("Evento Especial: Recuo de 2 casas!");
+                            Console.WriteLine("---------------------------------------------");
+
+                            posicaoComputador -= 2;
+
+                            Console.WriteLine($"Nova posição: {posicaoComputador}!");
+                        }
+
+                        if (resultadoComputador == 6)
+                        {
+                            Console.WriteLine("---------------------------------------------");
+                            Console.WriteLine("Evento Especial: RODADA EXTRA!");
+                            Console.WriteLine("---------------------------------------------");
+
+                            rodadaExtraComputador = true;
+                        }
+
+                        else if (posicaoComputador >= limiteLinhaChegada)
+                        {
+                            Console.WriteLine("Que pena! O computador alcançou a linha de chegada!");
+                            Console.ReadLine();
+
+                            jogoEstaEmAndamento = false;
+                            continue;
+                        }
+                        else
+                            Console.WriteLine($"O computador está na posição: {posicaoComputador} de {limiteLinhaChegada}");
+
+                    } while (rodadaExtraComputador);
+
 
                     Console.WriteLine("---------------------------------------------");
 
