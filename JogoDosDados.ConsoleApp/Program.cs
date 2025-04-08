@@ -11,193 +11,46 @@
     internal class Program
     {
         static void Main(string[] args)
-        {
-            const int limiteLinhaChegada = 30;
-
+        {            
             while (true)
-            {
-                int posicaoUsuario = 0;
-                int posicaoComputador = 0;
-
+            {               
                 bool jogoEstaEmAndamento = true;
 
+                Jogador jogador = new Jogador();
+                jogador.nome = "Usuário";
+
+                Jogador computador = new Jogador();
+                jogador.nome = "Computador";
+
                 while (jogoEstaEmAndamento)
-                {
-                    bool rodadaExtraUsuario;
+                {                                       
+                    jogador.RolarDados();                                                         
 
-                    do
+                    computador.RolarDados();
+
+                    if (computador.Venceu || jogador.Venceu)
                     {
-                        rodadaExtraUsuario = false;
+                        jogoEstaEmAndamento = false;
 
-                        ExibirCabecalho("Usuário");
+                        if (computador.posicaoAtual > jogador.posicaoAtual)
+                            Console.WriteLine("Computador Venceu");
 
-                        int resultado = LancarDado();
+                        else if (jogador.posicaoAtual > computador.posicaoAtual)
+                            Console.WriteLine("Jogador Venceu");
 
-                        ExibirResultadoSorteio(resultado);
-
-                        posicaoUsuario += resultado;
-
-                        if (posicaoUsuario == 5 || posicaoUsuario == 10 || posicaoUsuario == 15 || posicaoUsuario == 25)
-                        {
-                            Console.WriteLine("---------------------------------------------");
-                            Console.WriteLine("Evento Especial: Avanço Extra de 3 casas!");
-                            Console.WriteLine("---------------------------------------------");
-
-                            posicaoUsuario += 3;
-
-                            Console.WriteLine($"Nova posição: {posicaoUsuario}!");
-                        }
-
-                        else if (posicaoUsuario == 7 || posicaoUsuario == 13 || posicaoUsuario == 20)
-                        {
-                            Console.WriteLine("---------------------------------------------");
-                            Console.WriteLine("Evento Especial: Recuo de 2 casas!");
-                            Console.WriteLine("---------------------------------------------");
-
-                            posicaoUsuario -= 2;
-
-                            Console.WriteLine($"Nova posição: {posicaoUsuario}!");
-                        }
-
-                        if (resultado == 6)
-                        {
-                            Console.WriteLine("---------------------------------------------");
-                            Console.WriteLine("Evento Especial: RODADA EXTRA!");
-                            Console.WriteLine("---------------------------------------------");
-
-                            rodadaExtraUsuario = true;
-                        }
-
-                        else if (posicaoUsuario >= limiteLinhaChegada)
-                        {
-                            Console.WriteLine("Parabéns, você alcançou a linha de chegada!");
-                            Console.ReadLine();
-
-                            jogoEstaEmAndamento = false;
-                            continue;
-                        }
-                        else
-                            Console.WriteLine($"O jogador está na posição: {posicaoUsuario} de {limiteLinhaChegada}");
-
-                        Console.WriteLine("---------------------------------------------");
-
-                    } while (rodadaExtraUsuario);
-                    
-
-                    Console.Write("Pressione ENTER para continuar...");
-                    Console.ReadLine();
-
-                    bool rodadaExtraComputador;
-
-                    do
-                    {
-                        rodadaExtraComputador = false;
-
-                        ExibirCabecalho("Computador");
-
-                        int resultadoComputador = LancarDado();
-
-                        ExibirResultadoSorteio(resultadoComputador);
-
-                        posicaoComputador += resultadoComputador;
-
-                        if (posicaoComputador == 5 || posicaoComputador == 10 || posicaoComputador == 15 || posicaoComputador == 25)
-                        {
-                            Console.WriteLine("---------------------------------------------");
-                            Console.WriteLine("Evento Especial: Avanço Extra de 3 casas!");
-                            Console.WriteLine("---------------------------------------------");
-
-                            posicaoComputador += 3;
-
-                            Console.WriteLine($"Nova posição: {posicaoComputador}!");
-                        }
-
-                        else if (posicaoComputador == 7 || posicaoComputador == 13 || posicaoComputador == 20)
-                        {
-                            Console.WriteLine("---------------------------------------------");
-                            Console.WriteLine("Evento Especial: Recuo de 2 casas!");
-                            Console.WriteLine("---------------------------------------------");
-
-                            posicaoComputador -= 2;
-
-                            Console.WriteLine($"Nova posição: {posicaoComputador}!");
-                        }
-
-                        if (resultadoComputador == 6)
-                        {
-                            Console.WriteLine("---------------------------------------------");
-                            Console.WriteLine("Evento Especial: RODADA EXTRA!");
-                            Console.WriteLine("---------------------------------------------");
-
-                            rodadaExtraComputador = true;
-                        }
-
-                        else if (posicaoComputador >= limiteLinhaChegada)
-                        {
-                            Console.WriteLine("Que pena! O computador alcançou a linha de chegada!");
-                            Console.ReadLine();
-
-                            jogoEstaEmAndamento = false;
-                            continue;
-                        }
-                        else
-                            Console.WriteLine($"O computador está na posição: {posicaoComputador} de {limiteLinhaChegada}");
-
-                    } while (rodadaExtraComputador);
-
-
-                    Console.WriteLine("---------------------------------------------");
-
-                    Console.Write("Pressione ENTER para continuar...");
-                    Console.ReadLine();
+                        else 
+                            Console.WriteLine("Empate");
+                    }                                                    
                 }
 
-                string opcaoContinuar = ExibirMenuContinuar();
-        
+                Console.WriteLine("---------------------------------------------");
+                Console.Write("Deseja continuar? (s/N) ");
+                string opcaoContinuar = Console.ReadLine()!.ToUpper();
+
                 if (opcaoContinuar != "S")
                     break;
             }
         }
 
-        static void ExibirCabecalho(string nomeJogador)
-        {
-            Console.Clear();
-            Console.WriteLine("---------------------------------------------");
-            Console.WriteLine("Jogo dos Dados");
-            Console.WriteLine("---------------------------------------------");
-            Console.WriteLine($"Turno do(a): {nomeJogador}");
-            Console.WriteLine("---------------------------------------------");
-
-            if (nomeJogador != "Computador")
-            {
-                Console.Write("Pressione ENTER para lançar o dado...");
-                Console.ReadLine();
-            }
-        }
-
-        static int LancarDado()
-        {
-            Random geradorDeNumeros = new Random();
-
-            int resultado = geradorDeNumeros.Next(1, 7);
-
-            return resultado;
-        }
-
-        static void ExibirResultadoSorteio(int resultado)
-        {
-            Console.WriteLine("---------------------------------------------");
-            Console.WriteLine($"O valor sorteado foi: {resultado}");
-            Console.WriteLine("---------------------------------------------");
-        }
-
-        static string ExibirMenuContinuar()
-        {
-            Console.WriteLine("---------------------------------------------");
-            Console.Write("Deseja continuar? (s/N) ");
-            string opcaoContinuar = Console.ReadLine()!.ToUpper();
-
-            return opcaoContinuar;
-        }
     }
 }
