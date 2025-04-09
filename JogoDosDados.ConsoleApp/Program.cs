@@ -3,7 +3,7 @@
 internal class Program
 {
     static void Main(string[] args)
-    {        
+    {        //tste
         while (true)
         {
             Jogador jogador = new Jogador();
