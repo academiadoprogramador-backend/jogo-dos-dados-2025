@@ -1,107 +1,99 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿namespace JogoDosDados.ConsoleApp;
 
-namespace JogoDosDados.ConsoleApp
+public class Jogador
 {
-    public class Jogador
+    public string nome;
+    public int posicaoAtual;
+    const int limiteLinhaChegada = 30;
+    public bool Venceu;
+
+
+    public void RolarDados()
     {
-        public string nome;
-        public int posicaoAtual;
-        const int limiteLinhaChegada = 30;
-        public bool Venceu;
+        int numero = SortearNumero();            
 
+        AtualizarPosicao(numero);
 
-        public void RolarDados()
+        if (posicaoAtual >= limiteLinhaChegada)            
+            Venceu = true;                                        
+
+        Console.Write("Pressione ENTER para continuar...");
+        
+        Console.ReadLine();
+    }       
+
+    public void AtualizarPosicao(int numeroSorteado)
+    {
+        ExibirCabecalho();
+
+        ExibirNumeroSorteado(numeroSorteado);            
+
+        bool rodadaExtraUsuario;
+
+        do
         {
-            int numero = SortearNumero();            
+            rodadaExtraUsuario = false;
 
-            AtualizarPosicao(numero);
+            posicaoAtual += numeroSorteado;
 
-            if (posicaoAtual >= limiteLinhaChegada)            
-                Venceu = true;                                        
+            Console.WriteLine($"O jogador está na posição: {posicaoAtual} de {limiteLinhaChegada}");
 
-            Console.Write("Pressione ENTER para continuar...");
-            
-            Console.ReadLine();
-        }       
-
-        public void AtualizarPosicao(int numeroSorteado)
-        {
-            ExibirCabecalho();
-
-            ExibirNumeroSorteado(numeroSorteado);            
-
-            bool rodadaExtraUsuario;
-
-            do
+            if (posicaoAtual == 5 || posicaoAtual == 10 || posicaoAtual == 15 || posicaoAtual == 25)
             {
-                rodadaExtraUsuario = false;
+                Console.WriteLine("Evento Especial: Avanço Extra de 3 casas!");
 
-                posicaoAtual += numeroSorteado;
+                posicaoAtual += 3;
 
-                Console.WriteLine($"O jogador está na posição: {posicaoAtual} de {limiteLinhaChegada}");
+                Console.WriteLine($"Nova posição: {posicaoAtual}!");
 
-                if (posicaoAtual == 5 || posicaoAtual == 10 || posicaoAtual == 15 || posicaoAtual == 25)
-                {
-                    Console.WriteLine("Evento Especial: Avanço Extra de 3 casas!");
+                Console.WriteLine("---------------------------------------------");
+            }
 
-                    posicaoAtual += 3;
+            else if (posicaoAtual == 7 || posicaoAtual == 13 || posicaoAtual == 20)
+            {
+                Console.WriteLine("Evento Especial: Recuo de 2 casas!");
 
-                    Console.WriteLine($"Nova posição: {posicaoAtual}!");
+                posicaoAtual -= 2;
 
-                    Console.WriteLine("---------------------------------------------");
-                }
+                Console.WriteLine($"Nova posição: {posicaoAtual}!");
 
-                else if (posicaoAtual == 7 || posicaoAtual == 13 || posicaoAtual == 20)
-                {
-                    Console.WriteLine("Evento Especial: Recuo de 2 casas!");
+                Console.WriteLine("---------------------------------------------");
+            }
 
-                    posicaoAtual -= 2;
+            if (numeroSorteado == 6)
+            {
+                Console.WriteLine("Evento Especial: RODADA EXTRA!");
 
-                    Console.WriteLine($"Nova posição: {posicaoAtual}!");
+                rodadaExtraUsuario = true;
 
-                    Console.WriteLine("---------------------------------------------");
-                }
+                numeroSorteado = SortearNumero();
+                
+                ExibirNumeroSorteado(numeroSorteado);                    
+            }                                
 
-                if (numeroSorteado == 6)
-                {
-                    Console.WriteLine("Evento Especial: RODADA EXTRA!");
+        } while (rodadaExtraUsuario);
+    }
 
-                    rodadaExtraUsuario = true;
+    public void ExibirCabecalho()
+    {
+        Console.Clear();
+        Console.WriteLine("Jogo dos Dados");
+        Console.WriteLine("---------------------------------------------");
 
-                    numeroSorteado = SortearNumero();
-                    
-                    ExibirNumeroSorteado(numeroSorteado);                    
-                }                                
+        Console.WriteLine($"Turno: {nome}");
+    }
 
-            } while (rodadaExtraUsuario);
-        }
+    private static int SortearNumero()
+    {
+        Random geradorDeNumeros = new Random();
 
-        public void ExibirCabecalho()
-        {
-            Console.Clear();
-            Console.WriteLine("Jogo dos Dados");
-            Console.WriteLine("---------------------------------------------");
+        return geradorDeNumeros.Next(1, 7);
+    }
 
-            Console.WriteLine($"Turno: {nome}");
-        }
+    static void ExibirNumeroSorteado(int resultado)
+    {
+        Console.WriteLine($"O valor sorteado foi: {resultado}");
 
-        private static int SortearNumero()
-        {
-            Random geradorDeNumeros = new Random();
-
-            return geradorDeNumeros.Next(1, 7);
-        }
-
-        static void ExibirNumeroSorteado(int resultado)
-        {
-            Console.WriteLine($"O valor sorteado foi: {resultado}");
-
-            Console.WriteLine("---------------------------------------------");
-        }
+        Console.WriteLine("---------------------------------------------");
     }
 }
