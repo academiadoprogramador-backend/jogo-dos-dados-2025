@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace JogoDosDados.ConsoleApp
 {
@@ -16,29 +17,23 @@ namespace JogoDosDados.ConsoleApp
 
         public void RolarDados()
         {
-            Random geradorDeNumeros = new Random();
+            int numero = SortearNumero();            
 
-            int resultado = geradorDeNumeros.Next(1, 7);
+            AtualizarPosicao(numero);
 
-            AtualizarPosicao(resultado);
-
-            ExibirResultadoSorteio(resultado);
+            if (posicaoAtual >= limiteLinhaChegada)            
+                Venceu = true;                                        
 
             Console.Write("Pressione ENTER para continuar...");
+            
             Console.ReadLine();
-        }
+        }       
 
-        static void ExibirResultadoSorteio(int resultado)
-        {
-            Console.WriteLine("---------------------------------------------");
-            Console.WriteLine($"O valor sorteado foi: {resultado}");
-            Console.WriteLine("---------------------------------------------");
-        }
-
-
-        public void AtualizarPosicao(int resultado)
+        public void AtualizarPosicao(int numeroSorteado)
         {
             ExibirCabecalho();
+
+            ExibirNumeroSorteado(numeroSorteado);            
 
             bool rodadaExtraUsuario;
 
@@ -46,51 +41,42 @@ namespace JogoDosDados.ConsoleApp
             {
                 rodadaExtraUsuario = false;
 
-                posicaoAtual += resultado;
+                posicaoAtual += numeroSorteado;
+
+                Console.WriteLine($"O jogador está na posição: {posicaoAtual} de {limiteLinhaChegada}");
 
                 if (posicaoAtual == 5 || posicaoAtual == 10 || posicaoAtual == 15 || posicaoAtual == 25)
                 {
-                    Console.WriteLine("---------------------------------------------");
                     Console.WriteLine("Evento Especial: Avanço Extra de 3 casas!");
-                    Console.WriteLine("---------------------------------------------");
 
                     posicaoAtual += 3;
 
                     Console.WriteLine($"Nova posição: {posicaoAtual}!");
+
+                    Console.WriteLine("---------------------------------------------");
                 }
 
                 else if (posicaoAtual == 7 || posicaoAtual == 13 || posicaoAtual == 20)
                 {
-                    Console.WriteLine("---------------------------------------------");
                     Console.WriteLine("Evento Especial: Recuo de 2 casas!");
-                    Console.WriteLine("---------------------------------------------");
 
                     posicaoAtual -= 2;
 
                     Console.WriteLine($"Nova posição: {posicaoAtual}!");
+
+                    Console.WriteLine("---------------------------------------------");
                 }
 
-                if (resultado == 6)
+                if (numeroSorteado == 6)
                 {
-                    Console.WriteLine("---------------------------------------------");
                     Console.WriteLine("Evento Especial: RODADA EXTRA!");
-                    Console.WriteLine("---------------------------------------------");
 
                     rodadaExtraUsuario = true;
-                }
 
-                else if (posicaoAtual >= limiteLinhaChegada)
-                {
-                    Console.WriteLine("Parabéns, você alcançou a linha de chegada!");
-                    Console.ReadLine();
-
-                    Venceu = false;
-                    continue;
-                }
-                else
-                    Console.WriteLine($"O jogador está na posição: {posicaoAtual} de {limiteLinhaChegada}");
-                
-                Console.WriteLine("---------------------------------------------");
+                    numeroSorteado = SortearNumero();
+                    
+                    ExibirNumeroSorteado(numeroSorteado);                    
+                }                                
 
             } while (rodadaExtraUsuario);
         }
@@ -98,11 +84,23 @@ namespace JogoDosDados.ConsoleApp
         public void ExibirCabecalho()
         {
             Console.Clear();
-            Console.WriteLine("---------------------------------------------");
             Console.WriteLine("Jogo dos Dados");
             Console.WriteLine("---------------------------------------------");
 
-            Console.WriteLine($"Turno do(a): {nome}");
+            Console.WriteLine($"Turno: {nome}");
+        }
+
+        private static int SortearNumero()
+        {
+            Random geradorDeNumeros = new Random();
+
+            return geradorDeNumeros.Next(1, 7);
+        }
+
+        static void ExibirNumeroSorteado(int resultado)
+        {
+            Console.WriteLine($"O valor sorteado foi: {resultado}");
+
             Console.WriteLine("---------------------------------------------");
         }
     }
