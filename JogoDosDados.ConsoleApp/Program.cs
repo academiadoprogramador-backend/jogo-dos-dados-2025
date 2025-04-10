@@ -3,8 +3,7 @@
 internal class Program
 {
     static void Main(string[] args)
-    {
-        //teste
+    {        
         while (true)
         {
             JogoDados jogo = new JogoDados();
