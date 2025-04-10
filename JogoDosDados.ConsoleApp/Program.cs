@@ -3,7 +3,8 @@
 internal class Program
 {
     static void Main(string[] args)
-    {        //tste
+    {        
+        //outro commit     
         while (true)
         {
             Jogador jogador = new Jogador();
