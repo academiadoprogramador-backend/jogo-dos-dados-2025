@@ -10,27 +10,29 @@
             {
                 bool jogoEstaEmAndamento = true;
 
+                Jogador usuario = new Jogador();
+                usuario.nome = "Usuário";
+
+                Jogador computador = new Jogador();
+                computador.nome = "Computador";
+
                 while (jogoEstaEmAndamento)
                 {
-                    bool usuarioVenceu = Usuario.ExecutarRodada();
+                    bool usuarioVenceu = usuario.ExecutarRodada();
 
                     Console.Write("Pressione ENTER para continuar...");
                     Console.ReadLine();
 
-                    bool computadorVenceu = Computador.ExecutarRodada();
+                    bool computadorVenceu = computador.ExecutarRodada();
 
-                    if (usuarioVenceu || computadorVenceu)
-                        jogoEstaEmAndamento = false;
+                    if (usuarioVenceu || computadorVenceu) jogoEstaEmAndamento = false;
 
                     Console.WriteLine("---------------------------------------------");
                     Console.Write("Pressione ENTER para continuar...");
                     Console.ReadLine();
                 }
-
-                string opcaoContinuar = ExibirMenuContinuar();
         
-                if (opcaoContinuar != "S")
-                    break;
+                if (ExibirMenuContinuar() != "S") break;
             }
         }
 
