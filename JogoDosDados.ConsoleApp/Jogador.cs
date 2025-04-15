@@ -8,8 +8,9 @@ namespace JogoDosDados.ConsoleApp
 {
     internal class Jogador
     {
-        static int posicaoUsuario = 0;
-        public static bool RelizarJogada()
+        public int posicaoUsuario = 0;
+
+        public bool RealizarJogada()
         {
             bool rodadaExtraUsuario;
             bool jogadorVenceu = false;
@@ -76,7 +77,7 @@ namespace JogoDosDados.ConsoleApp
             return jogadorVenceu;
         }
 
-        static void ExibirCabecalho(string nomeJogador)
+        void ExibirCabecalho(string nomeJogador)
         {
             Console.Clear();
             Console.WriteLine("---------------------------------------------");
@@ -92,7 +93,7 @@ namespace JogoDosDados.ConsoleApp
             }
         }
 
-        static int LancarDado()
+        int LancarDado()
         {
             Random geradorDeNumeros = new Random();
 
@@ -101,7 +102,7 @@ namespace JogoDosDados.ConsoleApp
             return resultado;
         }
 
-        static void ExibirResultadoSorteio(int resultado)
+        void ExibirResultadoSorteio(int resultado)
         {
             Console.WriteLine("---------------------------------------------");
             Console.WriteLine($"O valor sorteado foi: {resultado}");

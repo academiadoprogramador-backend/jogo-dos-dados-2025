@@ -10,21 +10,24 @@
     */
 
     internal class Program
-    {                
+    {
         static void Main(string[] args)
         {
             while (true)
             {
                 bool jogoEmAndamento = true;
 
+                Jogador jogador = new Jogador();
+                Jogador computador = new Jogador();   
+
                 while (jogoEmAndamento)
                 {
-                    bool jogadorVenceu = Jogador.RelizarJogada();
-
+                    bool jogadorVenceu = jogador.RealizarJogada();
+                    
                     Console.Write("Pressione ENTER para continuar...");
                     Console.ReadLine();
 
-                    bool computadorVenceu = Computador.RealizarJogada();
+                    bool computadorVenceu = computador.RealizarJogada();
 
                     if (jogadorVenceu || computadorVenceu)
                         jogoEmAndamento = false;
@@ -41,7 +44,7 @@
                     break;
             }
         }
-             
+
         static string ExibirMenuContinuar()
         {
             Console.WriteLine("---------------------------------------------");
